@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import bincall.BinCallUtils;
-import bincall.Binary;
+import bincall.Command;
 
 import com.google.common.collect.Lists;
 
@@ -15,30 +15,30 @@ import com.google.common.collect.Lists;
 public class DirectoryListLookup implements BinLookupStrategy
 {
   private final List<File> directories;
-  private final boolean raiseExceptionIfMultipleMatchesFound;
+  private final boolean warnIfMultipleMatchesFound;
   
   public DirectoryListLookup(List<File> directories,
-      boolean raiseExceptionIfMultipleMatchesFound)
+      boolean warnIfMultipleMatchesFound)
   {
     this.directories = directories;
-    this.raiseExceptionIfMultipleMatchesFound = raiseExceptionIfMultipleMatchesFound;
+    this.warnIfMultipleMatchesFound = warnIfMultipleMatchesFound;
   }
   
-  public static DirectoryListLookup fromPathEnvironmentVariable(boolean raiseExceptionIfMultipleMatchesFound)
+  public static DirectoryListLookup fromPathEnvironmentVariable(boolean warnIfMultipleMatchesFound)
   {
     String value = System.getenv("PATH");
     List<File> directories = Lists.newArrayList();
     for (String item : value.split("[:]"))
       directories.add(new File(item));
-    return new DirectoryListLookup(directories, raiseExceptionIfMultipleMatchesFound);
+    return new DirectoryListLookup(directories, warnIfMultipleMatchesFound);
   }
   
-  public static DirectoryListLookup fromListWithUserHomeToResolve(List<String> paths, boolean raiseExceptionIfMultipleMatchesFound)
+  public static DirectoryListLookup fromListWithUserHomeToResolve(List<String> paths, boolean warnIfMultipleMatchesFound)
   {
     List<File> directories = Lists.newArrayList();
     for (String path : paths)
       directories.add(BinCallUtils.resolveUserHome(path));
-    return new DirectoryListLookup(directories, raiseExceptionIfMultipleMatchesFound);
+    return new DirectoryListLookup(directories, warnIfMultipleMatchesFound);
   }
   
   public static final List<String> defaultUnixPaths = Arrays.asList(new String[]{
@@ -53,7 +53,7 @@ public class DirectoryListLookup implements BinLookupStrategy
 
 
   @Override
-  public File lookup(Binary bin)
+  public File lookup(Command bin)
   {
     boolean found = false;
     File result = null;
@@ -64,8 +64,8 @@ public class DirectoryListLookup implements BinLookupStrategy
           {
             if (found) 
             {
-              if (raiseExceptionIfMultipleMatchesFound)
-                throw new RuntimeException("Duplicate binaries found in path: " + 
+              if (warnIfMultipleMatchesFound)
+                System.err.println("Duplicate binaries found in path: " + 
                     bin.getName() + " is in both " + file.getAbsolutePath() + 
                     " and " + result.getAbsolutePath());
             }
@@ -83,7 +83,7 @@ public class DirectoryListLookup implements BinLookupStrategy
   {
     return "DirectoryListLookup [directories=" + directories
         + ", raiseExceptionIfMultipleMatchesFound="
-        + raiseExceptionIfMultipleMatchesFound + "]";
+        + warnIfMultipleMatchesFound + "]";
   }
   
 }

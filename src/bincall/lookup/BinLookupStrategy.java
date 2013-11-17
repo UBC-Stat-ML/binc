@@ -2,11 +2,11 @@ package bincall.lookup;
 
 import java.io.File;
 
-import bincall.Binary;
+import bincall.Command;
 
 
 
 public interface BinLookupStrategy
 {
-  public File lookup(Binary binary);
+  public File lookup(Command binary);
 }

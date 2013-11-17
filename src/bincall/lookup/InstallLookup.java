@@ -1,17 +1,11 @@
 package bincall.lookup;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.Random;
 
-import javax.xml.bind.JAXBElement.GlobalScope;
-
-import com.google.common.io.Files;
-
 import bincall.BinCallUtils;
-import bincall.Binary;
+import bincall.Command;
 import bincall.GlobalSettings;
-import bincall.InstallableBinary;
 import bincall.Installer;
 import bincall.InstallerContext;
 
@@ -21,13 +15,16 @@ public class InstallLookup implements BinLookupStrategy
 {
   private static final String separator = "____";
   private static final String successStatusFileName = "auto-install-binary-location.txt";
+  public static final  BinLookupStrategy instance = new InstallLookup();
 
+  private InstallLookup() {}
+  
   @Override
-  public File lookup(Binary _binary)
+  public File lookup(Command binary)
   {
-    if (!(_binary instanceof InstallableBinary))
-      return null;
-    InstallableBinary binary = (InstallableBinary) _binary;
+//    if (!(_binary instanceof InstallableBinary))
+//      return null;
+//    InstallableBinary binary = (InstallableBinary) _binary;
     
     for (Installer installer : binary.getInstallers())
     {
@@ -40,7 +37,7 @@ public class InstallLookup implements BinLookupStrategy
   }
   
   private static final Random rand = new Random();
-  private static File attemptInstall(InstallableBinary binary, Installer installer)
+  private static File attemptInstall(Command binary, Installer installer)
   {
     final String installFolderPrefix = binary.getName() + separator + installer.getID();
     
