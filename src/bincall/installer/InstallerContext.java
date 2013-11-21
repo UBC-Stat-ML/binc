@@ -1,4 +1,4 @@
-package bincall;
+package bincall.installer;
 
 import java.io.File;
 
@@ -10,7 +10,13 @@ public class InstallerContext
 
   public InstallerContext(File installFolder)
   {
+    installFolder.mkdirs();
     this.installFolder = installFolder;
+  }
+
+  public File getInstallFolder()
+  {
+    return installFolder;
   }
 
 }

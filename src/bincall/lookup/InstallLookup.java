@@ -6,8 +6,8 @@ import java.util.Random;
 import bincall.BinCallUtils;
 import bincall.Command;
 import bincall.GlobalSettings;
-import bincall.Installer;
-import bincall.InstallerContext;
+import bincall.installer.Installer;
+import bincall.installer.InstallerContext;
 
 
 
@@ -22,10 +22,6 @@ public class InstallLookup implements BinLookupStrategy
   @Override
   public File lookup(Command binary)
   {
-//    if (!(_binary instanceof InstallableBinary))
-//      return null;
-//    InstallableBinary binary = (InstallableBinary) _binary;
-    
     for (Installer installer : binary.getInstallers())
     {
       File result = attemptInstall(binary, installer);
@@ -84,7 +80,7 @@ public class InstallLookup implements BinLookupStrategy
     File successFile = new File(directory, successStatusFileName);
     if (!successFile.exists()) return null;
     String contents = BinCallUtils.readFirstLine(successFile);
-    return new File(successFile, contents);
+    return new File(directory, contents);
   }
   
   @Override

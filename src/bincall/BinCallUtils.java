@@ -19,7 +19,12 @@ public class BinCallUtils
   public static String userHomeFolder()
   {
     if (userHome != null) return userHome;
-    return userHome = System.getProperty( "user.home" );
+    userHome = System.getProperty( "user.home" );
+    if (userHome == null)
+      throw new RuntimeException("Could not resolve the user folder");
+    if (!new File(userHome).exists())
+      throw new RuntimeException("Incorrect home folder:" + userHome);
+    return userHome;
   }
   public static File resolveUserHome(String path)
   {

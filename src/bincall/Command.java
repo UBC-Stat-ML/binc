@@ -8,11 +8,14 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import bincall.installer.Installer;
 import bincall.lookup.BinLookupStrategy;
+import bincall.lookup.DirectoryListLookup;
 
 import com.google.common.collect.Lists;
 
@@ -21,9 +24,19 @@ import com.google.common.collect.Lists;
 public class Command
 {
   
+  public static Command cmd(File cmdLocation)
+  {
+    return cmd(cmdLocation.getName()).setLookupStrategy(
+        DirectoryListLookup.fromListWithUserHomeToResolve(
+            Collections.singletonList(cmdLocation.getParent())));
+  }
+  
   public static Command cmd(String name)
   {
-    return new Command(
+    if (name.contains("/"))
+      return cmd(new File(name));
+    else
+      return new Command(
         name, 
         new ArrayList<Installer>(), 
         "", 
@@ -32,6 +45,11 @@ public class Command
         null, 
         new DefaultResultCodeInterpreter(), 
         GlobalSettings.defaultLookupStrategies);
+  }
+  
+  public File which()
+  {
+    return lookup();
   }
   
   public Command setInstaller(Installer _installer)
@@ -49,9 +67,38 @@ public class Command
         strategies); 
   }
   
-  public Command setInstaller(List<Installer> _installers)
+  public Command setInstallers(List<Installer> _installers)
   {
     List<Installer> installers = _installers;
+    return new Command(
+        name, 
+        installers, 
+        args, 
+        workingDirectory, 
+        maxDelay, 
+        outputFile, 
+        resultCodeInterpreter, 
+        strategies); 
+  }
+  
+  public Command setLookupStrategies(List<? extends BinLookupStrategy> _strategies)
+  {
+    List<? extends BinLookupStrategy> strategies = _strategies;
+    return new Command(
+        name, 
+        installers, 
+        args, 
+        workingDirectory, 
+        maxDelay, 
+        outputFile, 
+        resultCodeInterpreter, 
+        strategies); 
+  }
+  
+  public Command setLookupStrategy(BinLookupStrategy _strategy)
+  {
+    List<BinLookupStrategy> strategies = new ArrayList<BinLookupStrategy>();
+    strategies.add(_strategy);
     return new Command(
         name, 
         installers, 
@@ -77,7 +124,7 @@ public class Command
         strategies); 
   }
   
-  public Command runIn(File _workingDirectory) 
+  public Command ranIn(File _workingDirectory) 
   {
     File workingDirectory = _workingDirectory;
     return new Command(
@@ -162,8 +209,13 @@ public class Command
     return pb;
   }
   
-  public String call() { return call(""); }
-  public String call(String inputStreamContents)
+  public static String call(Command cmd)
+  {
+    return cmd.call();
+  }
+  
+  public String call() { return callWithInputStreamContents(""); }
+  public String callWithInputStreamContents(String inputStreamContents)
   {
     ProcessBuilder pb = newProcessBuilder();
     Process _proc = null;
@@ -270,7 +322,9 @@ public class Command
 //    Command cmd = cmd("ls").withArgs("-al");
 //    System.out.println(cmd.call());
     
-    System.out.println(cmd("sed").withArgs("s|x|y|").call("T-Rex"));
+    System.out.println(cmd("sed").withArgs("s|x|y|").callWithInputStreamContents("T-Rex"));
+    
+//    cmd("jags").setInstaller(_installer)
   }
 
   public String getName()
