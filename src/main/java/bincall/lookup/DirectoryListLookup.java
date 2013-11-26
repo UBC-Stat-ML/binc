@@ -22,12 +22,10 @@ public class DirectoryListLookup implements BinLookupStrategy
     this.directories = directories;
   }
   
-
-  
-//  public static String getPathFromBash()
-//  {
-//    return bash.withArgs("-l -s").callWithInputStreamContents("echo $PATH;");
-//  }
+  public static String getPathFromBash()
+  {
+    return bash.withArgs("-l -s").callWithInputStreamContents("echo $PATH;");
+  }
   
   public static DirectoryListLookup fromPathEnvironmentVariable()
   {
@@ -63,8 +61,6 @@ public class DirectoryListLookup implements BinLookupStrategy
     "~/bin/"
   });
   
-
-
   @Override
   public File lookup(Command bin)
   {

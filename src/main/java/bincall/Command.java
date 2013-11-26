@@ -44,7 +44,8 @@ public class Command
         Long.MAX_VALUE, 
         null, 
         new DefaultResultCodeInterpreter(), 
-        GlobalSettings.defaultLookupStrategies);
+        GlobalSettings.defaultLookupStrategies,
+        false);
   }
   
   public File which()
@@ -64,7 +65,8 @@ public class Command
         maxDelay, 
         outputFile, 
         resultCodeInterpreter, 
-        strategies); 
+        strategies,
+        standardOutMirroring); 
   }
   
   public Command setInstallers(List<Installer> _installers)
@@ -78,7 +80,8 @@ public class Command
         maxDelay, 
         outputFile, 
         resultCodeInterpreter, 
-        strategies); 
+        strategies,
+        standardOutMirroring); 
   }
   
   public Command setLookupStrategies(List<? extends BinLookupStrategy> _strategies)
@@ -92,7 +95,8 @@ public class Command
         maxDelay, 
         outputFile, 
         resultCodeInterpreter, 
-        strategies); 
+        strategies,
+        standardOutMirroring); 
   }
   
   public Command setLookupStrategy(BinLookupStrategy _strategy)
@@ -107,7 +111,8 @@ public class Command
         maxDelay, 
         outputFile, 
         resultCodeInterpreter, 
-        strategies); 
+        strategies,
+        standardOutMirroring); 
   }
   
   public Command withArgs(String _args)
@@ -121,7 +126,8 @@ public class Command
         maxDelay, 
         outputFile, 
         resultCodeInterpreter, 
-        strategies); 
+        strategies,
+        standardOutMirroring); 
   }
   
   public Command ranIn(File _workingDirectory) 
@@ -135,7 +141,8 @@ public class Command
         maxDelay, 
         outputFile, 
         resultCodeInterpreter, 
-        strategies); 
+        strategies,
+        standardOutMirroring); 
   }
   
   public Command setMaxDelay(long _maxDelay)
@@ -149,7 +156,8 @@ public class Command
         maxDelay, 
         outputFile, 
         resultCodeInterpreter, 
-        strategies); 
+        strategies,
+        standardOutMirroring); 
   }
 
   public Command saveOutputTo(File _outputFile)
@@ -163,7 +171,23 @@ public class Command
         maxDelay, 
         outputFile, 
         resultCodeInterpreter, 
-        strategies); 
+        strategies,
+        standardOutMirroring); 
+  }
+  
+  public Command withStandardOutMirroring()
+  {
+    boolean standardOutMirroring = true;
+    return new Command(
+        name, 
+        installers, 
+        args, 
+        workingDirectory, 
+        maxDelay, 
+        outputFile, 
+        resultCodeInterpreter, 
+        strategies,
+        standardOutMirroring); 
   }
 
   public Command(
@@ -174,7 +198,8 @@ public class Command
       long maxDelay, 
       File outputFile, 
       ResultCodeInterpreter resultCodeInterpreter,
-      List<? extends BinLookupStrategy> strategies)
+      List<? extends BinLookupStrategy> strategies,
+      boolean standardOutMirroring)
   {
     this.name = name;
     this.installers = installers;
@@ -184,6 +209,7 @@ public class Command
     this.outputFile = outputFile;
     this.resultCodeInterpreter = resultCodeInterpreter;
     this.strategies = strategies;
+    this.standardOutMirroring = standardOutMirroring;
   }
 
   private final String name;
@@ -196,6 +222,7 @@ public class Command
   private final File outputFile; // = null;
   private final ResultCodeInterpreter resultCodeInterpreter; // = new DefaultResultCodeInterpreter();
   private final List<? extends BinLookupStrategy> strategies;
+  private final boolean standardOutMirroring;
   
   public ProcessBuilder newProcessBuilder()
   {
@@ -238,26 +265,24 @@ public class Command
       InputStreamReader 
         stdoutReader = new InputStreamReader(stdout);
       BufferedReader 
-        stdoutBufferedReader = new BufferedReader(stdoutReader);//,
+        stdoutBufferedReader = new BufferedReader(stdoutReader);
       String line = null;
       // send the input
-      if (inputStreamContents.length() > 0)
-      {
-        OutputStream stdin = proc.getOutputStream();
-        PrintWriter pw = new PrintWriter(stdin);
-        pw.append(inputStreamContents);
-        pw.close();
-      }
+      OutputStream stdin = proc.getOutputStream();
+      PrintWriter pw = new PrintWriter(stdin);
+      pw.append(inputStreamContents);
+      pw.close();
       // read the output of the program
       while ( (line = stdoutBufferedReader.readLine()) != null)
       {
         result.append(line + "\n");
         if (writer != null)
           writer.append(line + "\n");
+        if (standardOutMirroring)
+          System.out.println(line);
       }
 
       int resultCode = proc.waitFor();
-      
       resultCodeInterpreter.interpret(this, resultCode);
 
       timer.cancel();
