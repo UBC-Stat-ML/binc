@@ -1,4 +1,4 @@
-package bincall.installer;
+package binc.installer;
 
 import java.io.File;
 

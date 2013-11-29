@@ -1,8 +1,8 @@
-package bincall.lookup;
+package binc.lookup;
 
 import java.io.File;
 
-import bincall.Command;
+import binc.Command;
 
 
 

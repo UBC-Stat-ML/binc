@@ -1,11 +1,10 @@
-package bincall;
+package binc;
 
-import static bincall.Command.cmd;
+import static binc.Command.*;
 
 import java.io.File;
 
-import bincall.installer.Installers;
-import static bincall.Command.*;
+import binc.installer.Installers;
 
 public class Commands
 {

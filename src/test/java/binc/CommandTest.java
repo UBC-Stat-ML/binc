@@ -1,4 +1,6 @@
-package bincall;
+package binc;
+
+import org.junit.Test;
 
 
 

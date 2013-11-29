@@ -1,10 +1,10 @@
-package bincall.installer;
+package binc.installer;
 
 import java.io.File;
 
-import static bincall.installer.Downloader.*;
-import static bincall.Command.*;
-import static bincall.Commands.*;
+import static binc.Command.*;
+import static binc.Commands.*;
+import static binc.installer.Downloader.*;
 
 public class Installers
 {

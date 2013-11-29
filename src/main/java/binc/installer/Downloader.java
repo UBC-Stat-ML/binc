@@ -1,4 +1,4 @@
-package bincall.installer;
+package binc.installer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,12 +10,12 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Collections;
 import java.util.List;
 
-import bincall.BinCallUtils;
+import binc.BinCallUtils;
 
 import com.google.common.collect.Lists;
 
-import static bincall.Command.cmd;
-import static bincall.Commands.*;
+import static binc.Command.cmd;
+import static binc.Commands.*;
 
 public class Downloader
 {

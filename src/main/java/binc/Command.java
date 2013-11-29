@@ -1,4 +1,4 @@
-package bincall;
+package binc;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import bincall.installer.Installer;
-import bincall.lookup.BinLookupStrategy;
-import bincall.lookup.DirectoryListLookup;
+import binc.installer.Installer;
+import binc.lookup.BinLookupStrategy;
+import binc.lookup.DirectoryListLookup;
 
 import com.google.common.collect.Lists;
 

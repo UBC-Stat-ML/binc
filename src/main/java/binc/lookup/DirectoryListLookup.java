@@ -1,16 +1,16 @@
-package bincall.lookup;
+package binc.lookup;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import bincall.BinCallUtils;
-import bincall.Command;
-import bincall.GlobalSettings;
+import binc.BinCallUtils;
+import binc.Command;
+import binc.GlobalSettings;
 
 import com.google.common.collect.Lists;
 
-import static bincall.Commands.*;
+import static binc.Commands.*;
 
 
 public class DirectoryListLookup implements BinLookupStrategy

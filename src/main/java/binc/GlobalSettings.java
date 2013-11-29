@@ -1,13 +1,13 @@
-package bincall;
+package binc;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import bincall.lookup.BinLookupStrategy;
-import bincall.lookup.DirectoryListLookup;
-import bincall.lookup.InstallLookup;
+import binc.lookup.BinLookupStrategy;
+import binc.lookup.DirectoryListLookup;
+import binc.lookup.InstallLookup;
 
 
 
@@ -32,4 +32,6 @@ public class GlobalSettings
       InstallLookup.instance),
     forceInstallStrategy = Arrays.asList(
       InstallLookup.instance);
+  
+  
 }

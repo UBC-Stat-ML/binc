@@ -1,13 +1,13 @@
-package bincall.lookup;
+package binc.lookup;
 
 import java.io.File;
 import java.util.Random;
 
-import bincall.BinCallUtils;
-import bincall.Command;
-import bincall.GlobalSettings;
-import bincall.installer.Installer;
-import bincall.installer.InstallerContext;
+import binc.BinCallUtils;
+import binc.Command;
+import binc.GlobalSettings;
+import binc.installer.Installer;
+import binc.installer.InstallerContext;
 
 
 
