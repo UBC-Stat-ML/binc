@@ -12,7 +12,9 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
 
-
+/**
+ * 
+ */
 public class BinCallUtils
 { 
   private static String userHome = null;
