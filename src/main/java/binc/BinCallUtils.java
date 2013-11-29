@@ -14,7 +14,7 @@ import com.google.common.io.Files;
 
 
 public class BinCallUtils
-{
+{ 
   private static String userHome = null;
   public static String userHomeFolder()
   {
