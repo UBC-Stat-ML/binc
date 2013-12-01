@@ -361,4 +361,9 @@ public class Command
   {
     return installers;
   }
+
+  public File getWorkingDirectory()
+  {
+    return workingDirectory;
+  }
 }
