@@ -13,6 +13,7 @@ public class Commands
   public static Command gunzip = cmd("gunzip");
   public static Command tar = cmd("tar");
   public static Command bash = cmd(new File("/bin/bash")); 
+  public static Command rm = cmd(new File("/bin/rm"));
   
   // Some examples of less standard commands
   public static Command jags = cmd("jags").setInstaller(Installers.jagsInstaller);
