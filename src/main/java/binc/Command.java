@@ -315,7 +315,7 @@ public class Command
     return command;
   }
   
-  private File lookup()
+  public File lookup()
   {
     for (BinLookupStrategy strategy : strategies)
     {
