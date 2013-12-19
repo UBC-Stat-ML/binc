@@ -40,7 +40,7 @@ public class BinCallUtils
       return Files.toString(f, Charsets.UTF_8);
     } catch (IOException e)
     {
-      throw new RuntimeException();
+      throw new RuntimeException(e);
     }
   }
   
