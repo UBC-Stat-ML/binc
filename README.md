@@ -98,3 +98,15 @@ public class Commands {
 }
 ```
 
+A more complex example showing other chaining
+capabilities:
+
+
+```java
+
+@org.junit.Test
+public void testComple() {
+    java.lang.String result = binc.Command.cmd("ls").setMaxDelay(1000).ranIn(new java.io.File("/")).callWithInputStreamContents("to input stream");
+}
+```
+

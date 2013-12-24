@@ -1,6 +1,8 @@
 package binc;
 
 
+import java.io.File;
+
 import org.junit.Test;
 import org.junit.runners.JUnit4;
 
@@ -52,6 +54,21 @@ public class CommandTest
     String result = call(Command.cmd("ls"));
     assertTrue(result.charAt(0) != '.');
     assertTrue(call(complexLs).charAt(0) == '.');
+  }
+  
+  /**
+   * A more complex example showing other chaining
+   * capabilities:
+   */
+  @Tutorial(order = 5, showSource = true)
+  @Test
+  public void testComple()
+  {
+    String result = Command
+      .cmd("ls")
+      .setMaxDelay(1000)
+      .ranIn(new File("/"))
+      .callWithInputStreamContents("to input stream");
   }
   
 }
