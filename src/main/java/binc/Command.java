@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import tutorialj.Tutorial;
+
 import binc.installer.Installer;
 import binc.lookup.BinLookupStrategy;
 import binc.lookup.DirectoryListLookup;
@@ -20,7 +22,37 @@ import binc.lookup.DirectoryListLookup;
 import com.google.common.collect.Lists;
 
 
-
+/**
+ * Summary
+ * -------
+ * 
+ * binc makes it easier to call binary program from java applications.
+ * 
+ * Installation
+ * ------------
+ * 
+ * - Compile using ``gradle installApp``
+ * - Add the jars in  ``build/install/binc/lib/`` to your classpath, OR, add
+ * the following to your project gradle script 
+ * 
+ * ```groovy
+ * dependencies {
+ *   compile group: 'com.3rdf', name: 'binc', version: '1.0'
+ * }
+ * repositories {
+ *   mavenCentral()
+ *   jcenter()
+ *   maven {
+ *     url "http://www.stat.ubc.ca/~bouchard/maven/"
+ *   }
+ *   maven {
+ *     url "http://spoon.gforge.inria.fr/repositories/releases/"
+ *   }
+ * }
+ * ```
+ * 
+ */
+@Tutorial(order=-1)
 public class Command
 {
   

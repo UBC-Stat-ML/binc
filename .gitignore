@@ -123,3 +123,5 @@ build/classes/main/binc/lookup/InstallLookup.class
 build/ivy.xml
 build/libs/binc-0.0.jar
 build/poms/pom-default.xml
+build
+spooned
