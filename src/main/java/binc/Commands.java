@@ -16,7 +16,7 @@ import binc.installer.Installers;
  * libraries of commands. This makes call shorter, and makes
  * it easier to track down dependencies to external programs.
  */
-@Tutorial(order = 4, showSource = true)
+@Tutorial(showSource = true)
 public class Commands
 {
 

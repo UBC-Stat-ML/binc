@@ -14,6 +14,35 @@ import static binc.Commands.*;
 
 import static org.junit.Assert.*;
 
+
+/**
+ * Summary
+ * -------
+ * 
+ * binc makes it easier to call binary program from java applications.
+ * 
+ * Installation
+ * ------------
+ * 
+ * - Compile using ``gradle installApp``
+ * - Add the jars in  ``build/install/binc/lib/`` to your classpath, OR, add
+ * the following to your project gradle script 
+ * 
+ * ```groovy
+ * dependencies {
+ *   compile group: 'com.3rdf', name: 'binc', version: '1.1'
+ * }
+ * repositories {
+ *   mavenCentral()
+ *   jcenter()
+ *   maven {
+ *     url "http://www.stat.ubc.ca/~bouchard/maven/"
+ *   }
+ * }
+ * ```
+ * 
+ */
+@Tutorial(startTutorial = "README.md")
 public class CommandTest
 {
   /**
@@ -22,7 +51,7 @@ public class CommandTest
    * 
    * Use ``call(cmd([name])`` to call a command synchronously:
    */
-  @Tutorial(order = 1, showSource = true)
+  @Tutorial(showSource = true)
   @Test
   public void testLs()
   {
@@ -33,7 +62,7 @@ public class CommandTest
   /**
    * Add arguments and other options with method chaining:
    */
-  @Tutorial(order = 2, showSource = true)
+  @Tutorial(showSource = true)
   @Test
   public void testArgs()
   {
@@ -45,7 +74,7 @@ public class CommandTest
    * Method chaining is implemented using immutable creation,
    * so commands can be safely saved for later:
    */
-  @Tutorial(order = 3, showSource = true)
+  @Tutorial(showSource = true, nextStep = Commands.class)
   @Test
   public void testSavedCmd()
   {
@@ -60,7 +89,7 @@ public class CommandTest
    * A more complex example showing other chaining
    * capabilities:
    */
-  @Tutorial(order = 5, showSource = true)
+  @Tutorial(showSource = true)
   @Test
   public void testComple()
   {
