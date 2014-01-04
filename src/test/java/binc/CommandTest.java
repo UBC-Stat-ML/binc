@@ -15,43 +15,41 @@ import static binc.Commands.*;
 import static org.junit.Assert.*;
 
 
-/**
- * Summary
- * -------
- * 
- * binc makes it easier to call binary program from java applications.
- * 
- * Installation
- * ------------
- * 
- * - Compile using ``gradle installApp``
- * - Add the jars in  ``build/install/binc/lib/`` to your classpath, OR, add
- * the following to your project gradle script 
- * 
- * ```groovy
- * dependencies {
- *   compile group: 'com.3rdf', name: 'binc', version: '1.1'
- * }
- * repositories {
- *   mavenCentral()
- *   jcenter()
- *   maven {
- *     url "http://www.stat.ubc.ca/~bouchard/maven/"
- *   }
- * }
- * ```
- * 
- */
-@Tutorial(startTutorial = "README.md")
+
 public class CommandTest
 {
   /**
+   * Summary
+   * -------
+   * 
+   * binc makes it easier to call binary program from java applications.
+   * 
+   * Installation
+   * ------------
+   * 
+   * - Compile using ``gradle installApp``
+   * - Add the jars in  ``build/install/binc/lib/`` to your classpath, OR, add
+   * the following to your project gradle script 
+   * 
+   * ```groovy
+   * dependencies {
+   *   compile group: 'com.3rdf', name: 'binc', version: '1.1'
+   * }
+   * repositories {
+   *   mavenCentral()
+   *   jcenter()
+   *   maven {
+   *     url "http://www.stat.ubc.ca/~bouchard/maven/"
+   *   }
+   * }
+   * ```
+   * 
    * Usage
    * -------
    * 
    * Use ``call(cmd([name])`` to call a command synchronously:
    */
-  @Tutorial(showSource = true)
+  @Tutorial(showSource = true, startTutorial = "README.md")
   @Test
   public void testLs()
   {
@@ -62,7 +60,7 @@ public class CommandTest
   /**
    * Add arguments and other options with method chaining:
    */
-  @Tutorial(showSource = true)
+  @Tutorial
   @Test
   public void testArgs()
   {
@@ -73,8 +71,12 @@ public class CommandTest
   /**
    * Method chaining is implemented using immutable creation,
    * so commands can be safely saved for later:
+   * 
+   * Immutability of method chaining can be used to create
+   * libraries of commands. This makes call shorter, and makes
+   * it easier to track down dependencies to external programs.
    */
-  @Tutorial(showSource = true, nextStep = Commands.class)
+  @Tutorial(showSource = true)
   @Test
   public void testSavedCmd()
   {

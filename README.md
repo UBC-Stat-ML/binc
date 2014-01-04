@@ -24,87 +24,46 @@ repositories {
 }
 ```
 
-
-
-
 Usage
 -------
 
 Use ``call(cmd([name])`` to call a command synchronously:
 
-
 ```java
-
-@org.junit.Test
-public void testLs() {
-    java.lang.String result = binc.Command.call(binc.Command.cmd("ls"));
-    java.lang.System.out.println(result);
-}
+String result = call(cmd("ls"));
+System.out.println(result);
 ```
 
 Add arguments and other options with method chaining:
 
-
 ```java
-
-@org.junit.Test
-public void testArgs() {
-    java.lang.String result = binc.Command.call(binc.Command.cmd("ls").withArgs("-a"));
-    java.lang.System.out.println(result);
-}
+String result = call(cmd("ls").withArgs("-a"));
+System.out.println(result);
 ```
 
 Method chaining is implemented using immutable creation,
 so commands can be safely saved for later:
 
-
-```java
-
-@org.junit.Test
-public void testSavedCmd() {
-    binc.Command simpleLs = binc.Command.cmd("ls");
-    binc.Command complexLs = simpleLs.withArgs("-a");
-    java.lang.String result = binc.Command.call(binc.Command.cmd("ls"));
-    org.junit.Assert.assertTrue(((result.charAt(0)) != '.'));
-    org.junit.Assert.assertTrue(((binc.Command.call(complexLs).charAt(0)) == '.'));
-}
-```
-
 Immutability of method chaining can be used to create
 libraries of commands. This makes call shorter, and makes
 it easier to track down dependencies to external programs.
 
-
 ```java
-
-public class Commands {
-    @org.junit.Test
-    public void testLibraryCmd() {
-        binc.Command.call(binc.Commands.tar.withArgs("-help"));
-    }
-    
-    public static binc.Command make = binc.Command.cmd("make");
-    
-    public static binc.Command gunzip = binc.Command.cmd("gunzip");
-    
-    public static binc.Command tar = binc.Command.cmd("tar");
-    
-    public static binc.Command bash = binc.Command.cmd(new java.io.File("/bin/bash"));
-    
-    public static binc.Command rm = binc.Command.cmd(new java.io.File("/bin/rm"));
-    
-}
+Command simpleLs = cmd("ls");
+Command complexLs = simpleLs.withArgs("-a");
+String result = call(Command.cmd("ls"));
+assertTrue(result.charAt(0) != '.');
+assertTrue(call(complexLs).charAt(0) == '.');
 ```
 
 A more complex example showing other chaining
 capabilities:
 
-
 ```java
-
-@org.junit.Test
-public void testComple() {
-    java.lang.String result = binc.Command.cmd("ls").setMaxDelay(1000).ranIn(new java.io.File("/")).callWithInputStreamContents("to input stream");
-}
+String result = Command
+  .cmd("ls")
+  .setMaxDelay(1000)
+  .ranIn(new File("/"))
+  .callWithInputStreamContents("to input stream");
 ```
 

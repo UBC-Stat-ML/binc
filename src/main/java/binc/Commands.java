@@ -11,12 +11,6 @@ import tutorialj.Tutorial;
 
 import binc.installer.Installers;
 
-/**
- * Immutability of method chaining can be used to create
- * libraries of commands. This makes call shorter, and makes
- * it easier to track down dependencies to external programs.
- */
-@Tutorial(showSource = true)
 public class Commands
 {
 
