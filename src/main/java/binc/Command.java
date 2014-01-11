@@ -309,7 +309,7 @@ public class Command
   {
     File binaryLocation = lookup();
     if (binaryLocation == null) 
-      throw new RuntimeException("Binary not found: " + this.name + "\nLookup strategies: " + strategies + "\nCurrent directory: " + workingDirectory.getAbsolutePath());
+      throw new RuntimeException("Binary not found: " + this.name + "\nLookup strategies: " + strategies + "\nCurrent directory: " + workingDirectory);
     String [] splitArgs = (args == null || args.matches("^\\s*$")) ? new String[]{} : this.args.split("\\s+");
     List<String> command = Lists.newArrayList();
     command.add(binaryLocation.getAbsolutePath());
