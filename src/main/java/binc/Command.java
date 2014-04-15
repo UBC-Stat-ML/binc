@@ -190,6 +190,21 @@ public class Command
         strategies,
         standardOutMirroring); 
   }
+  
+  public Command throwOnNonZeroReturnCode()
+  {
+    ResultCodeInterpreter resultCodeInterpreter = new ThrowOnNonZeroCode();
+    return new Command(
+        name, 
+        installers, 
+        args, 
+        workingDirectory, 
+        maxDelay, 
+        outputFile, 
+        resultCodeInterpreter, 
+        strategies,
+        standardOutMirroring); 
+  }
 
   public Command(
       String name, 
@@ -284,7 +299,7 @@ public class Command
       }
 
       int resultCode = proc.waitFor();
-      resultCodeInterpreter.interpret(this, resultCode);
+      resultCodeInterpreter.interpret(this, resultCode, result);
 
       timer.cancel();
     }
@@ -330,18 +345,30 @@ public class Command
   
   public static interface ResultCodeInterpreter
   {
-    public void interpret(Command c, int code);
+    public void interpret(Command c, int code, CharSequence output);
   }
   
   public static class DefaultResultCodeInterpreter implements ResultCodeInterpreter
   {
 
     @Override
-    public void interpret(Command c, int code)
+    public void interpret(Command c, int code, CharSequence output)
     {
       if (code != 0)
-        System.err.println("Warning: command " + c.name + " returned non-zero code (" + code + ")");
+        System.err.println("Warning: command " + c.name + " returned non-zero code (" + code + "). Output so far:\n" + output);
     }
+  }
+  
+  public static class ThrowOnNonZeroCode implements ResultCodeInterpreter
+  {
+
+    @Override
+    public void interpret(Command c, int code, CharSequence output)
+    {
+      if (code != 0)
+        throw new RuntimeException("Warning: command " + c.name + " returned non-zero code (" + code + "). Output so far:\n" + output);
+    }
+    
   }
   
   public static void main(String[] args)
