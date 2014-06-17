@@ -30,7 +30,9 @@ public class BinCallUtils
   }
   public static File resolveUserHome(String path)
   {
-    return new File(path.replaceFirst("[~][/]", userHomeFolder() + "/"));
+    if (path.contains("~/"))
+      path = path.replaceFirst("[~][/]", userHomeFolder() + "/");
+    return new File(path);
   }
   
   public static String toString(File f)
