@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import tutorialj.Tutorial;
-
 import binc.installer.Installer;
 import binc.lookup.BinLookupStrategy;
 import binc.lookup.DirectoryListLookup;
@@ -32,6 +30,35 @@ public class Command
             Collections.singletonList(cmdLocation.getParent())));
   }
   
+  /**
+   * Runs the command using the given name and the 
+   * instance's look up strategy to locate the location
+   * of the executable in the file system.
+   * 
+   * @param name
+   * @return
+   */
+  public static Command byName(String name) 
+  {
+    return cmd(name);
+  }
+  
+  /**
+   * Runs the command at a specific location of
+   * the file system.
+   * 
+   * This means that a single lookup strategy is used
+   * to find the executable, i.e. the strategy that consists
+   * in looking in a single directory. 
+   * 
+   * @param path
+   * @return
+   */
+  public static Command byPath(File path)
+  {
+    return cmd(path);
+  }
+  
   public static Command cmd(String name)
   {
     if (name.contains("/"))
@@ -40,7 +67,7 @@ public class Command
       return new Command(
         name, 
         new ArrayList<Installer>(), 
-        "", 
+        new ArrayList<String>(), 
         null, 
         Long.MAX_VALUE, 
         null, 
@@ -116,9 +143,108 @@ public class Command
         standardOutMirroring); 
   }
   
+  private static List<String> split(String args)
+  {
+    String [] splitArgs = (args == null || args.matches("^\\s*$")) ? new String[]{} : args.split("\\s+");
+    return Arrays.asList(splitArgs);
+  }
+  
+  /**
+   * Splits the provided string with the pattern \\s+ and set the
+   * resulting list as the arguments. 
+   * 
+   * Note, if you want to NOT split by space (e.g. if one of the arguments
+   * is a path which may contain spaces), use withArg() and appendArg().
+   * 
+   * E.g. call(cp.withArgs("-R -v").appendArg(file1).appendArg(file2));
+   * 
+   * @param _args
+   * @return
+   */
   public Command withArgs(String _args)
   {
-    String args = _args;
+    List<String> args = split(_args);
+    return new Command(
+        name, 
+        installers, 
+        args, 
+        workingDirectory, 
+        maxDelay, 
+        outputFile, 
+        resultCodeInterpreter, 
+        strategies,
+        standardOutMirroring); 
+  }
+  
+  public Command withSegmentedArguments(List<String> _args)
+  {
+    List<String> args = _args;
+    return new Command(
+        name, 
+        installers, 
+        args, 
+        workingDirectory, 
+        maxDelay, 
+        outputFile, 
+        resultCodeInterpreter, 
+        strategies,
+        standardOutMirroring); 
+  }
+  
+  /**
+   * Make sure you understand the difference with
+   * withArgs (see withArgs).
+   * 
+   * @param _arg
+   * @return
+   */
+  public Command withArg(String _arg)
+  {
+    List<String> args = Lists.newArrayList(_arg);
+    return new Command(
+        name, 
+        installers, 
+        args, 
+        workingDirectory, 
+        maxDelay, 
+        outputFile, 
+        resultCodeInterpreter, 
+        strategies,
+        standardOutMirroring); 
+  }
+  
+  /**
+   * Make sure you understand the difference between appendArg
+   * and appendArgs. See comments in withArgs
+   * @param _arg
+   * @return
+   */
+  public Command appendArgs(String _args)
+  {
+    List<String> args = Lists.newArrayList(this.args);
+    args.addAll(split(_args));
+    return new Command(
+        name, 
+        installers, 
+        args, 
+        workingDirectory, 
+        maxDelay, 
+        outputFile, 
+        resultCodeInterpreter, 
+        strategies,
+        standardOutMirroring); 
+  }
+  
+  /**
+   * Make sure you understand the difference between appendArg
+   * and appendArgs. See comments in withArgs
+   * @param _arg
+   * @return
+   */
+  public Command appendArg(String _arg)
+  {
+    List<String> args = Lists.newArrayList(this.args);
+    args.add(_arg);
     return new Command(
         name, 
         installers, 
@@ -209,7 +335,7 @@ public class Command
   public Command(
       String name, 
       List<Installer> installers, 
-      String args,
+      List<String> args,
       File workingDirectory, 
       long maxDelay, 
       File outputFile, 
@@ -231,7 +357,7 @@ public class Command
   private final String name;
   private final List<Installer> installers;
   
-  private final String args; // = "";
+  private final List<String> args; // = "";
   private final File workingDirectory; // = null;
   private final long maxDelay; // = Long.MAX_VALUE;
 //  private final String inputStreamContents; // = ""; passed by call() instead (in prevision for pipes)
@@ -304,7 +430,8 @@ public class Command
       timer.cancel();
     }
     catch (Throwable t) { throw new RuntimeException(t); }
-    finally {
+    finally 
+    {
       if (_proc != null)
       {
         try
@@ -325,10 +452,9 @@ public class Command
     File binaryLocation = lookup();
     if (binaryLocation == null) 
       throw new RuntimeException("Binary not found: " + this.name + "\nLookup strategies: " + strategies + "\nCurrent directory: " + workingDirectory);
-    String [] splitArgs = (args == null || args.matches("^\\s*$")) ? new String[]{} : this.args.split("\\s+");
     List<String> command = Lists.newArrayList();
     command.add(binaryLocation.getAbsolutePath());
-    command.addAll(Arrays.asList(splitArgs));
+    command.addAll(args); //Arrays.asList(splitArgs));
     return command;
   }
   
@@ -369,16 +495,6 @@ public class Command
         throw new RuntimeException("Warning: command " + c.name + " returned non-zero code (" + code + "). Output so far:\n" + output);
     }
     
-  }
-  
-  public static void main(String[] args)
-  {
-//    Command cmd = cmd("ls").withArgs("-al");
-//    System.out.println(cmd.call());
-    
-    System.out.println(cmd("sed").withArgs("s|x|y|").callWithInputStreamContents("T-Rex"));
-    
-//    cmd("jags").setInstaller(_installer)
   }
 
   public String getName()

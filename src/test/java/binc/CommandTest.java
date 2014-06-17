@@ -1,18 +1,15 @@
 package binc;
 
 
+import static binc.Command.call;
+import static binc.Command.cmd;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 
 import org.junit.Test;
-import org.junit.runners.JUnit4;
 
 import tutorialj.Tutorial;
-
-import static binc.Command.*;
-
-import static binc.Commands.*;
-
-import static org.junit.Assert.*;
 
 
 
@@ -33,7 +30,7 @@ public class CommandTest
    * 
    * ```groovy
    * dependencies {
-   *   compile group: 'com.3rdf', name: 'binc', version: '1.1'
+   *   compile group: 'ca.ubc.stat', name: 'binc', version: '1.2.0'
    * }
    * repositories {
    *   mavenCentral()
@@ -53,8 +50,9 @@ public class CommandTest
   @Test
   public void testLs()
   {
-    String result = call(cmd("ls"));
+    String result = call(Command.byName("ls"));
     System.out.println(result);
+    System.out.println(call(Command.byPath(new File("/bin/ls"))));
   }
   
   /**
@@ -66,6 +64,11 @@ public class CommandTest
   {
     String result = call(cmd("ls").withArgs("-a"));
     System.out.println(result);
+    
+    File file1 = new File("test 1");
+    File file2 = new File("test 2");
+    // note: using appendArg (not plural) to avoid breaking the spaces in the path names
+    call(cmd("cp").withArgs("-R -v").appendArg(file1.getAbsolutePath()).appendArg(file2.getAbsolutePath()));
   }
   
   /**
@@ -101,5 +104,5 @@ public class CommandTest
       .ranIn(new File("/"))
       .callWithInputStreamContents("to input stream");
   }
-  
+
 }

@@ -22,8 +22,8 @@ public class Installers
       downloader(destination, "http://sourceforge.net/projects/mcmc-jags/files/JAGS/2.x/Source/JAGS-2.2.0.tar.gz/download")
 //        .addMirror("http://3thfoundation.com/resources/JAGS-3.4.0.tar.gz")
         .download();
-      call(gunzip.ranIn(installFolder).withArgs(downloadedFileName + ".tar.gz"));
-      call(tar.ranIn(installFolder).withArgs("-xf " + downloadedFileName + ".tar"));
+      call(gunzip.ranIn(installFolder).withArg(downloadedFileName + ".tar.gz"));
+      call(tar.ranIn(installFolder).withArg("-xf").appendArg(downloadedFileName + ".tar"));
       File decompressed = new File(installFolder, downloadedFileName);
       
       // compile
