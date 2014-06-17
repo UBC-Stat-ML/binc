@@ -22,7 +22,7 @@ public class GlobalSettings
     return installDir;
   }
   
-  public static boolean warnIfMultipleMatchesFound = true;
+  public static boolean warnIfMultipleMatchesFound = false;
   
 //  public static boolean mergeErrorStreamWithOutputStream = true; 
   public static List<? extends BinLookupStrategy> 
