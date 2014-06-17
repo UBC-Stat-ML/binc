@@ -13,7 +13,7 @@ the following to your project gradle script
 
 ```groovy
 dependencies {
-  compile group: 'com.3rdf', name: 'binc', version: '1.1'
+  compile group: 'ca.ubc.stat', name: 'binc', version: '1.2.0'
 }
 repositories {
   mavenCentral()
@@ -30,8 +30,9 @@ Usage
 Use ``call(cmd([name])`` to call a command synchronously:
 
 ```java
-String result = call(cmd("ls"));
+String result = call(Command.byName("ls"));
 System.out.println(result);
+System.out.println(call(Command.byPath(new File("/bin/ls"))));
 ```
 
 Add arguments and other options with method chaining:
@@ -39,6 +40,11 @@ Add arguments and other options with method chaining:
 ```java
 String result = call(cmd("ls").withArgs("-a"));
 System.out.println(result);
+
+File file1 = new File("test 1");
+File file2 = new File("test 2");
+// note: using appendArg (not plural) to avoid breaking the spaces in the path names
+call(cmd("cp").withArgs("-R -v").appendArg(file1.getAbsolutePath()).appendArg(file2.getAbsolutePath()));
 ```
 
 Method chaining is implemented using immutable creation,
