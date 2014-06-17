@@ -5,7 +5,7 @@ apply plugin: 'maven'
 uploadArchives {
   repositories.mavenDeployer {
     repository(url: "file:///Users/bouchard/Documents/web/public_html/maven/")
-    pom.version = "1.1.2"
+    pom.version = "1.2.0"
   	pom.artifactId = "binc"
   	pom.groupId = "ca.ubc.stat"
   }
@@ -30,9 +30,6 @@ dependencies {
   compile group: 'junit', name: 'junit', version: '4.11'
   compile group: 'ca.ubc.stat', name: 'tutorialj', version: '2.0.2'
 }
-
-apply plugin:'application'  
-mainClassName = "bincall.Command"
 
 task(tutorialj, dependsOn: ['build','testClasses'], type: JavaExec) {
   main = 'tutorialj.Main'
