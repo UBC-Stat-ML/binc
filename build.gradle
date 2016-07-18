@@ -4,8 +4,8 @@ apply plugin: 'maven'
 
 uploadArchives {
   repositories.mavenDeployer {
-    repository(url: "file:///Users/bouchard/Documents/web/public_html/maven/")
-    pom.version = "1.2.1"
+    repository(url: "file:///${System.properties['user.home']}/artifacts/")
+    pom.version = "1.2.2"
   	pom.artifactId = "binc"
   	pom.groupId = "ca.ubc.stat"
   }
