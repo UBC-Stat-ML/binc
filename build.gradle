@@ -20,7 +20,7 @@ eclipse {
 repositories {
   mavenCentral()
   maven {
-    url "http://www.stat.ubc.ca/~bouchard/maven/"
+    url "https://www.stat.ubc.ca/~bouchard/maven/"
   }
 }
 
