@@ -492,9 +492,30 @@ public class Command
     public void interpret(Command c, int code, CharSequence output)
     {
       if (code != 0)
-        throw new RuntimeException("Warning: command " + c.name + " returned non-zero code (" + code + "). Output so far:\n" + output);
+        throw new BinaryExecutionException(code, output, c);
     }
     
+  }
+  
+  public static class BinaryExecutionException extends RuntimeException
+  {
+    private static final long serialVersionUID = 1L;
+    
+    public final int code;
+    public final CharSequence output;
+    public final Command command;
+    public BinaryExecutionException(int code, CharSequence output, Command command)
+    {
+      super();
+      this.code = code;
+      this.output = output;
+      this.command = command;
+    }
+    @Override
+    public String toString()
+    {
+      return "Warning: command " + command.name + " returned non-zero code (" + code + "). Output so far:\n" + output;
+    }
   }
 
   public String getName()
