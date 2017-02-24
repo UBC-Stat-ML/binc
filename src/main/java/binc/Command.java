@@ -382,6 +382,7 @@ public class Command
 
       timer.cancel();
     }
+    catch (BinaryExecutionException bee) { throw bee; }
     catch (Throwable t) { throw new RuntimeException(t); }
     finally 
     {
