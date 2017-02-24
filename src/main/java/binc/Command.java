@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import binc.installer.Installer;
 import binc.lookup.BinLookupStrategy;
 import binc.lookup.DirectoryListLookup;
 
@@ -66,7 +65,6 @@ public class Command
     else
       return new Command(
         name, 
-        new ArrayList<Installer>(), 
         new ArrayList<String>(), 
         null, 
         Long.MAX_VALUE, 
@@ -80,44 +78,13 @@ public class Command
   {
     return lookup();
   }
-  
-  public Command setInstaller(Installer _installer)
-  {
-    List<Installer> installers = Lists.newArrayList();
-    installers.add(_installer);
-    return new Command(
-        name, 
-        installers, 
-        args, 
-        workingDirectory, 
-        maxDelay, 
-        outputFile, 
-        resultCodeInterpreter, 
-        strategies,
-        standardOutMirroring); 
-  }
-  
-  public Command setInstallers(List<Installer> _installers)
-  {
-    List<Installer> installers = _installers;
-    return new Command(
-        name, 
-        installers, 
-        args, 
-        workingDirectory, 
-        maxDelay, 
-        outputFile, 
-        resultCodeInterpreter, 
-        strategies,
-        standardOutMirroring); 
-  }
-  
+
+
   public Command setLookupStrategies(List<? extends BinLookupStrategy> _strategies)
   {
     List<? extends BinLookupStrategy> strategies = _strategies;
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -133,7 +100,6 @@ public class Command
     strategies.add(_strategy);
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -166,7 +132,6 @@ public class Command
     List<String> args = split(_args);
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -181,7 +146,6 @@ public class Command
     List<String> args = _args;
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -203,7 +167,6 @@ public class Command
     List<String> args = Lists.newArrayList(_arg);
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -225,7 +188,6 @@ public class Command
     args.addAll(split(_args));
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -247,7 +209,6 @@ public class Command
     args.add(_arg);
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -262,7 +223,6 @@ public class Command
     File workingDirectory = _workingDirectory;
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -277,7 +237,6 @@ public class Command
     long maxDelay = _maxDelay;
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -292,7 +251,6 @@ public class Command
     File outputFile = _outputFile;
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -307,7 +265,6 @@ public class Command
     boolean standardOutMirroring = true;
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -322,7 +279,6 @@ public class Command
     ResultCodeInterpreter resultCodeInterpreter = new ThrowOnNonZeroCode();
     return new Command(
         name, 
-        installers, 
         args, 
         workingDirectory, 
         maxDelay, 
@@ -334,7 +290,6 @@ public class Command
 
   public Command(
       String name, 
-      List<Installer> installers, 
       List<String> args,
       File workingDirectory, 
       long maxDelay, 
@@ -344,7 +299,6 @@ public class Command
       boolean standardOutMirroring)
   {
     this.name = name;
-    this.installers = installers;
     this.args = args;
     this.workingDirectory = workingDirectory;
     this.maxDelay = maxDelay;
@@ -355,7 +309,6 @@ public class Command
   }
 
   private final String name;
-  private final List<Installer> installers;
   
   private final List<String> args; // = "";
   private final File workingDirectory; // = null;
@@ -521,11 +474,6 @@ public class Command
   public String getName()
   {
     return name;
-  }
-
-  public List<Installer> getInstallers()
-  {
-    return installers;
   }
 
   public File getWorkingDirectory()

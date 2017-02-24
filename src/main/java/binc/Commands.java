@@ -1,25 +1,13 @@
 package binc;
 
-import static binc.Command.*;
-import static org.junit.Assert.assertTrue;
+import static binc.Command.cmd;
 
 import java.io.File;
 
-import org.junit.Test;
 
-import tutorialj.Tutorial;
-
-import binc.installer.Installers;
 
 public class Commands
 {
-
-  @Test
-  public void testLibraryCmd()
-  {
-    call(tar.withArgs("-help"));
-  }
-  
   // Commands assumed to be present in decent UNIX installs
   public static Command make = cmd("make");
   public static Command gunzip = cmd("gunzip");
