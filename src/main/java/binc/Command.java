@@ -6,12 +6,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 import binc.lookup.BinLookupStrategy;
 import binc.lookup.DirectoryListLookup;
@@ -56,6 +62,25 @@ public class Command
   public static Command byPath(File path)
   {
     return cmd(path);
+  }
+  
+  public static Command byClass(Class<?> mainClass)
+  {
+    // Use the same classpath
+    String classpath = Arrays.stream(((URLClassLoader) Thread.currentThread().getContextClassLoader()).getURLs())
+        .map(URL::getFile)
+        .collect(Collectors.joining(File.pathSeparator));
+    
+    Command javaCmd = byPath(Paths.get(System.getProperty("java.home"), "bin", "java").toFile());
+    
+    // get Xmx options such as -Xmx1g, etc
+    for (String jvmArgument : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+      javaCmd = javaCmd.appendArg(jvmArgument);
+    }
+    
+    return javaCmd
+        .appendArg("-classpath").appendArg(classpath)
+        .appendArg(mainClass.getCanonicalName());
   }
   
   public static Command cmd(String name)
