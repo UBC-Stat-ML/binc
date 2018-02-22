@@ -9,8 +9,6 @@ import java.io.File;
 
 import org.junit.Test;
 
-import tutorialj.Tutorial;
-
 
 
 public class CommandTest
@@ -46,7 +44,6 @@ public class CommandTest
    * 
    * Use ``call(cmd([name])`` to call a command synchronously:
    */
-  @Tutorial(showSource = true, startTutorial = "README.md")
   @Test
   public void testLs()
   {
@@ -58,7 +55,6 @@ public class CommandTest
   /**
    * Add arguments and other options with method chaining:
    */
-  @Tutorial
   @Test
   public void testArgs()
   {
@@ -68,7 +64,7 @@ public class CommandTest
     File file1 = new File("test 1");
     File file2 = new File("test 2");
     // note: using appendArg (not plural) to avoid breaking the spaces in the path names
-    call(cmd("cp").withArgs("-R -v").appendArg(file1.getAbsolutePath()).appendArg(file2.getAbsolutePath()));
+    call(cmd("cp").appendArgs("-R -v").appendArg(file1.getAbsolutePath()).appendArg(file2.getAbsolutePath()));
   }
   
   /**
@@ -79,12 +75,11 @@ public class CommandTest
    * libraries of commands. This makes call shorter, and makes
    * it easier to track down dependencies to external programs.
    */
-  @Tutorial(showSource = true)
   @Test
   public void testSavedCmd()
   {
     Command simpleLs = cmd("ls");
-    Command complexLs = simpleLs.withArgs("-a");
+    Command complexLs = simpleLs.appendArgs("-a");
     String result = call(Command.cmd("ls"));
     assertTrue(result.charAt(0) != '.');
     assertTrue(call(complexLs).charAt(0) == '.');
@@ -94,7 +89,6 @@ public class CommandTest
    * A more complex example showing other chaining
    * capabilities:
    */
-  @Tutorial(showSource = true)
   @Test
   public void testComple()
   {

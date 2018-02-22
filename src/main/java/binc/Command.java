@@ -148,6 +148,8 @@ public class Command
    * 
    * E.g. call(cp.withArgs("-R -v").appendArg(file1).appendArg(file2));
    * 
+   * @deprecated Use appendArgs or appendArg instead in 99% of situations. Otherwise object.withArgs(first).withArgs(second) will 
+   *    silently override the first arg, which is easily overlooked and has introduced bugs in code a few times.
    * @param _args
    * @return
    */
@@ -165,6 +167,12 @@ public class Command
         standardOutMirroring); 
   }
   
+  /**
+   * @deprecated Use appendArgs or appendArg instead in 99% of situations. Otherwise object.withArgs(first).withArgs(second) will 
+   *    silently override the first arg, which is easily overlooked and has introduced bugs in code a few times.
+   * @param _args
+   * @return
+   */
   public Command withSegmentedArguments(List<String> _args)
   {
     List<String> args = _args;
@@ -183,6 +191,8 @@ public class Command
    * Make sure you understand the difference with
    * withArgs (see withArgs).
    * 
+   * @deprecated Use appendArgs or appendArg instead in 99% of situations. Otherwise object.withArgs(first).withArgs(second) will 
+   *    silently override the first arg, which is easily overlooked and has introduced bugs in code a few times.
    * @param _arg
    * @return
    */
@@ -202,7 +212,7 @@ public class Command
   
   /**
    * Make sure you understand the difference between appendArg
-   * and appendArgs. See comments in withArgs
+   * and appendArgs. This version will split the arguments using pattern \\s+.
    * @param _arg
    * @return
    */
@@ -223,7 +233,7 @@ public class Command
   
   /**
    * Make sure you understand the difference between appendArg
-   * and appendArgs. See comments in withArgs
+   * and appendArgs. This version does not split.
    * @param _arg
    * @return
    */

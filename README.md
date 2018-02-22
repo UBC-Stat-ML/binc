@@ -38,13 +38,13 @@ System.out.println(call(Command.byPath(new File("/bin/ls"))));
 Add arguments and other options with method chaining:
 
 ```java
-String result = call(cmd("ls").withArgs("-a"));
+String result = call(cmd("ls").appendArgs("-a"));
 System.out.println(result);
 
 File file1 = new File("test 1");
 File file2 = new File("test 2");
 // note: using appendArg (not plural) to avoid breaking the spaces in the path names
-call(cmd("cp").withArgs("-R -v").appendArg(file1.getAbsolutePath()).appendArg(file2.getAbsolutePath()));
+call(cmd("cp").appendArgs("-R -v").appendArg(file1.getAbsolutePath()).appendArg(file2.getAbsolutePath()));
 ```
 
 Method chaining is implemented using immutable creation,
@@ -56,7 +56,7 @@ it easier to track down dependencies to external programs.
 
 ```java
 Command simpleLs = cmd("ls");
-Command complexLs = simpleLs.withArgs("-a");
+Command complexLs = simpleLs.appendArgs("-a");
 String result = call(Command.cmd("ls"));
 assertTrue(result.charAt(0) != '.');
 assertTrue(call(complexLs).charAt(0) == '.');
