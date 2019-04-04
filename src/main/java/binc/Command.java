@@ -84,7 +84,7 @@ public class Command
   
   public static Command cmd(String name)
   {
-    if (name.contains("/"))
+    if (name.contains("/") || name.contains("\\"))
       return cmd(new File(name));
     else
       return new Command(
